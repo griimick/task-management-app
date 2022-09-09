@@ -53,6 +53,17 @@ $ npm run test:cov
     - Use both of these for helper decorator functions
         - https://github.com/typestack/class-validator
         - https://github.com/typestack/class-transformer
+7. **Respository:**
+8. **Guards:**
+9. **Interceptors:**
+10. **Custom Decorators:**
+
+## References:
+
+1. https://wanago.io/2020/05/11/nestjs-api-controllers-routing-module/
+2. https://docs.nestjs.com/
+3. https://github.com/jmcdo29/testing-nestjs
+4. 
 
 ## License
 
