@@ -5,9 +5,11 @@ import {
 	UnauthorizedException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { JwtService } from '@nestjs/jwt';
 import { Repository } from 'typeorm';
 import { User } from './user.entity';
 import { AuthCredentialsDto } from './dto/auth-credentials.dto';
+import { JwtPayload } from './jwt-payload.interface';
 import * as bcrypt from 'bcrypt';
 
 const ERR_CODE = {
@@ -19,6 +21,7 @@ export class AuthService {
 	constructor(
 		@InjectRepository(User)
 		private usersRepository: Repository<User>,
+		private jwtService: JwtService,
 	) {}
 
 	async signUp(authCredentialsDto: AuthCredentialsDto): Promise<void> {
@@ -43,7 +46,9 @@ export class AuthService {
 		}
 	}
 
-	async signIn(authCredentialsDto: AuthCredentialsDto): Promise<string> {
+	async signIn(
+		authCredentialsDto: AuthCredentialsDto,
+	): Promise<{ accessToken: string }> {
 		const { username, password } = authCredentialsDto;
 		const user = await this.usersRepository.findOne({
 			where: {
@@ -52,7 +57,9 @@ export class AuthService {
 		});
 
 		if (user && bcrypt.compare(password, user.password)) {
-			return 'success';
+			const payload: JwtPayload = { username };
+			const accessToken: string = await this.jwtService.sign(payload);
+			return { accessToken };
 		} else {
 			throw new UnauthorizedException('Please verify your login crendentials');
 		}
