@@ -18,7 +18,6 @@ import { AuthModule } from './auth/auth.module';
 			database: 'task-management',
 			synchronize: true,
 			autoLoadEntities: true,
-			logging: ['query', 'error'],
 		}),
 		AuthModule,
 	],
